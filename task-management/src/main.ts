@@ -95,3 +95,12 @@ bootstrap();
  * Este nos puede servir para extraer params de un request de un endpoint, definiendo
  * dentro del dto que paramatros queremos o cuales son los que se van a usar
  */
+
+ /**
+  * Pipes
+  * son funciones que operan sobre argumentos solo despues de ser llamados
+  * estos le hacen algun amodificacion como son limpiar espacion vacios,
+  * pasar a mayusculas, aplican algun filtro etc, validacion de tipos ej:
+  * 
+  * ValidationPipe, ParseIntPipe
+  */
