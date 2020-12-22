@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Logger, Param, ParseIntPipe, Patch, Post, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiOkResponse, ApiTags, ApiNotFoundResponse, ApiInternalServerErrorResponse } from '@nestjs/swagger';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -9,6 +10,7 @@ import { TaskStatus } from './task-status.enum';
 import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
 
+@ApiTags('tasks')
 @Controller('tasks')
 @UseGuards(AuthGuard())
 export class TasksController {
@@ -17,6 +19,14 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
+  @ApiOkResponse({
+    description: 'Retrieved task by ID successfully',
+    type: Task
+  })
+  @ApiNotFoundResponse({ description: 'No task found for ID' })
+  @ApiInternalServerErrorResponse({
+    description: 'Internal server error',
+  })
   getTasks(
     @Query(ValidationPipe) filterDto: GetTaskFilterDto,
     @GetUser() user: User

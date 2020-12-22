@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as config from 'config';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
   const serverConfig = config.get('server');
@@ -12,6 +13,16 @@ async function bootstrap() {
   if (process.env.NODE_ENV === 'development') {
     app.enableCors();
   }
+
+  const options = new DocumentBuilder()
+    .setTitle('ToDo App')
+    .setDescription('The task API description is here!')
+    .setVersion('1.0')
+    .addTag('tasks', 'Endpoints to add tasks')
+    .build();
+
+  const taskDocument = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('api/docs', app, taskDocument);
 
   const port = process.env.PORT || serverConfig.port;
   await app.listen(port);
